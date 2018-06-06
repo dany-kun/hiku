@@ -1,0 +1,17 @@
+apply plugin: 'konan'
+
+konanArtifacts {
+
+    program('hiku') {
+        enableMultiplatform true
+
+        libraries {
+            artifact project(':cmd-native'), 'cmd'
+            artifact project(':hiketsu-native'), 'hiketsu'
+        }
+    }
+}
+
+dependencies {
+    expectedBy project(':hiku-common')
+}

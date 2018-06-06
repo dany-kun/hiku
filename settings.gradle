@@ -1,0 +1,11 @@
+rootProject.name = 'hiku'
+include 'cmd-jvm'
+include 'cmd-common'
+include 'cmd-native'
+include 'hiketsu-common'
+include 'hiketsu-jvm'
+include 'hiketsu-native'
+include 'hiku-common'
+include 'hiku-jvm'
+include 'hiku-native'
+

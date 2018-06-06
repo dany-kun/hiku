@@ -1,0 +1,14 @@
+buildscript {
+    ext.kotlin_version = '1.2.41'
+    ext.coroutines_version = '0.23.0'
+    ext.konan_version = '0.7.1'
+
+    repositories {
+        mavenCentral()
+        maven { url "https://dl.bintray.com/jetbrains/kotlin-native-dependencies" }
+    }
+    dependencies {
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+        classpath "org.jetbrains.kotlin:kotlin-native-gradle-plugin:$konan_version"
+    }
+}

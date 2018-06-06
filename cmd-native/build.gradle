@@ -1,0 +1,24 @@
+apply plugin: 'konan'
+
+konan.targets = ['linux', 'macos']
+
+konanArtifacts {
+    library('cmd') {
+         enableMultiplatform true
+    }
+
+    program('cmd-test') {
+        srcDir 'src/test/kotlin'
+        commonSourceSet 'test'
+        libraries {
+            artifact 'cmd'
+        }
+        extraOpts '-tr'
+    }
+}
+
+dependencies {
+    expectedBy project(':cmd-common')
+}
+
+task test(dependsOn: run)

@@ -1,0 +1,35 @@
+apply plugin: 'konan'
+
+konan.targets = ['linux', 'macos']
+
+konanArtifacts {
+    interop('libsecret', targets: ['linux']) {
+    }
+
+    library('hiketsu') {
+        enableMultiplatform true
+
+        libraries {
+            artifact 'libsecret'
+        }
+
+        target('linux') {
+            srcFiles fileTree('src/linux')
+        }
+    }
+
+    program('hiketsu-test') {
+        srcDir 'src/test/kotlin'
+        commonSourceSet 'test'
+        libraries {
+            artifact 'hiketsu'
+        }
+        extraOpts '-tr'
+    }
+}
+
+dependencies {
+    expectedBy project(':hiketsu-common')
+}
+
+task test(dependsOn: run)
