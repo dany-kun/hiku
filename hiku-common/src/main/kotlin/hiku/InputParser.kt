@@ -1,8 +1,9 @@
 package hiku
 
+import hiku.git.lib.CommandLineGitService
 import hiku.git.lib.GitBranch
 
-fun findCommand(args: Array<String>): Command {
+suspend fun findCommand(args: Array<String>): Command {
     return try {
         val action = args[0].toLowerCase()
         when (action) {
@@ -20,7 +21,16 @@ fun findCommand(args: Array<String>): Command {
     }
 }
 
-private fun createGitPRCommand(arguments: List<String>): Command.PR {
+private suspend fun createGitPRCommand(arguments: List<String>): Command.PushPR {
     fun String.toRemoteBranch() = split("/").let { GitBranch.Remote(it[1], it[0]) }
-    return Command.PR(arguments[0].toRemoteBranch(), arguments[1].toRemoteBranch())
+    return when (arguments.size) {
+        1 -> {
+            val currentBranchName = CommandLineGitService.getCurrentBranchName()
+            Command.PushPR(GitBranch.Remote(currentBranchName, "origin"), arguments[0].toRemoteBranch())
+        }
+        2 -> Command.PushPR(arguments[0].toRemoteBranch(), arguments[1].toRemoteBranch())
+        else -> {
+            throw IllegalStateException("Cannot create a pr with arguments ${arguments.joinToString(", ")}")
+        }
+    }
 }

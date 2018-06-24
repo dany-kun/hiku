@@ -7,8 +7,10 @@ import kotlin.coroutines.experimental.startCoroutine
 
 
 fun main(args: Array<String>) {  
-    val command = findCommand(args)
-    runCoroutine({ execute(command) }) {
+    runCoroutine({ 
+        val command = findCommand(args)
+        execute(command) 
+    }) {
         println(it)
     }
 }
