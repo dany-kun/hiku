@@ -22,7 +22,7 @@ suspend fun findCommand(args: Array<String>): Command {
 }
 
 private suspend fun createGitPRCommand(arguments: List<String>): Command.PushPR {
-    fun String.toRemoteBranch() = split("/").let { GitBranch.Remote(it[1], it[0]) }
+    fun String.toRemoteBranch() = split(":").let { GitBranch.Remote(it[1], it[0]) }
     return when (arguments.size) {
         1 -> {
             val currentBranchName = CommandLineGitService.getCurrentBranchName()
