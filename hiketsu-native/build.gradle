@@ -9,12 +9,15 @@ konanArtifacts {
     library('hiketsu') {
         enableMultiplatform true
 
-        libraries {
-            artifact 'libsecret'
-        }
-
         target('linux') {
             srcFiles fileTree('src/linux')
+            libraries {
+                artifact 'libsecret'
+            }
+        }
+
+        target('macos') {
+            srcFiles fileTree('src/macos')
         }
     }
 
