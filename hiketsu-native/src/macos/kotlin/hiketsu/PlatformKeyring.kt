@@ -15,13 +15,13 @@ actual class PlatformKeyring actual constructor(private val keyringName: String)
     override fun storeEntry(keyName: String, keyValue: String) {
         memScoped {
             SecKeychainAddGenericPassword(null,
-                SERVICE_NAME.length,
-                SERVICE_NAME,
-                keyName.length,
-                keyName,
-                keyValue.length,
-                keyValue.cstr,
-                null)
+                    SERVICE_NAME.length,
+                    SERVICE_NAME,
+                    keyName.length,
+                    keyName,
+                    keyValue.length,
+                    keyValue.cstr,
+                    null)
         }
     }
 
@@ -45,17 +45,17 @@ actual class PlatformKeyring actual constructor(private val keyringName: String)
         val pwdLength = scope.alloc<UInt32Var>()
         val pwd = scope.alloc<COpaquePointerVar>()
         SecKeychainFindGenericPassword(null,
-            SERVICE_NAME.length,
-            SERVICE_NAME,
-            keyName.length,
-            keyName,
-            pwdLength.ptr,
-            pwd.ptr,
-            pointerToItem?.ptr
+                SERVICE_NAME.length,
+                SERVICE_NAME,
+                keyName.length,
+                keyName,
+                pwdLength.ptr,
+                pwd.ptr,
+                pointerToItem?.ptr
         )
         return pwd.value
-            ?.reinterpret<ByteVar>()
-            ?.toKString()
-            ?.take(pwdLength.value)
+                ?.reinterpret<ByteVar>()
+                ?.toKString()
+                ?.take(pwdLength.value)
     }
 }
