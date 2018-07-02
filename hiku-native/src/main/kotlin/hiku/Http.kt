@@ -19,7 +19,7 @@ actual suspend inline fun <reified B, reified R : Any> makePostRequest(url: Stri
     val trimmedResult = result.dropLastWhile { !it.isDigit() }.trim()
     val responseCode = trimmedResult.takeLast(3).toInt()
     val responseBody = trimmedResult.dropLast(3)
-    return if (responseCode == 404) {
+    return if (responseCode == 404 || responseCode == 401) {
         HttpResponse.Error.Auth(IllegalStateException(responseBody))
     } else if (responseCode >= 200 && responseCode < 400) {
         // Dirty

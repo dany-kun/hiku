@@ -8,7 +8,6 @@ import hiku.git.lib.GitBranch
 import hiku.git.lib.RemoteInfo
 import hiku.makePostRequest
 import hiku.requestInput
-import hiku.toBase64
 
 class GithubService(owner: String,
                     repo: String,
@@ -59,15 +58,12 @@ class GithubService(owner: String,
     }
 
     private suspend fun githubOAuthHeader(): Pair<String, String> {
-        val (username, password) = getUserCredits()
-        val auth = "$username:$password".toBase64()
-        return "Authorization" to "Basic $auth"
+        val password = getUsertoken()
+        return "Authorization" to "token $password"
     }
 
-    private suspend fun getUserCredits(): Pair<String, String> {
-        val username = findUserInfo(KEYRING_USERNAME_kEY, "Github username: ", false)
-        val password = findUserInfo(KEYRING_USERTOKEN_KEY, "Github token: ", true)
-        return Pair(username, password)
+    private suspend fun getUsertoken(): String {
+        return findUserInfo(KEYRING_USERTOKEN_KEY, "Github token: ", true)
     }
 
     private suspend fun findUserInfo(infoName: String, infoMessage: String, hideInput: Boolean): String {
