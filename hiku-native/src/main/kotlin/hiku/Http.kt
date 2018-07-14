@@ -12,24 +12,26 @@ actual suspend inline fun <reified B, reified R : Any> makePostRequest(url: Stri
         throw RuntimeException("Unknown request body: $body; can currently handle only github PR post request")
     }
     val prBody = body as GithubService.PullRequestBody
+
+    // TODO use Kotlin Native libcurl library or any other native Http Client lib
     val command = createCurlCommand(prBody, headers, url)
     val result = runLocalCommand(listOf(command), useOutput = true)
             ?.dropWhile { it == '0' } //TODO understand where those 0 are coming from
             ?: throw IllegalStateException("Got null response from http request")
+
     val trimmedResult = result.dropLastWhile { !it.isDigit() }.trim()
     val responseCode = trimmedResult.takeLast(3).toInt()
     val responseBody = trimmedResult.dropLast(3)
     return if (responseCode == 404 || responseCode == 401) {
         HttpResponse.Error.Auth(IllegalStateException(responseBody))
     } else if (responseCode >= 200 && responseCode < 400) {
-        // Dirty
+        // Dirty: use either a C or a Kotlin Native JSON deserialization lib
         val htmlUrl = extractHtmlUrl(responseBody)
         HttpResponse.Success(GithubService.CreatedPullRequest(htmlUrl)) as HttpResponse<R>
     } else {
         println(responseCode)
         println(responseBody)
         kotlin.system.exitProcess(0)
-        // HttpResponse.Error.Unknown<R>(IllegalStateException(responseBody))
     }
 }
 
