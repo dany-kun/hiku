@@ -1,24 +1,13 @@
-apply plugin: 'konan'
+apply plugin: 'org.jetbrains.kotlin.platform.native'
 
-konan.targets = ['linux', 'macos']
-
-konanArtifacts {
-    library('cmd') {
-         enableMultiplatform true
-    }
-
-    program('cmd-test') {
-        srcDir 'src/test/kotlin'
-        commonSourceSet 'test'
-        libraries {
-            artifact 'cmd'
-        }
-        extraOpts '-tr'
-    }
+components.main {
+    // Compile this component for 64-bit MacOS, Linux and Windows.
+    targets = ['macos', 'linux']
+    outputKinds = [KLIBRARY]
 }
 
 dependencies {
     expectedBy project(':cmd-common')
 }
 
-task test(dependsOn: run)
+//task test(dependsOn: run)

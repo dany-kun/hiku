@@ -1,17 +1,13 @@
-apply plugin: 'konan'
+apply plugin: 'org.jetbrains.kotlin.platform.native'
 
-konanArtifacts {
-
-    program('hiku') {
-        enableMultiplatform true
-
-        libraries {
-            artifact project(':cmd-native'), 'cmd'
-            artifact project(':hiketsu-native'), 'hiketsu'
-        }
-    }
+components.main {
+    // Compile this component for 64-bit MacOS, Linux and Windows.
+    targets = ['macos', 'linux']
+    outputKinds = [EXECUTABLE]
 }
 
 dependencies {
     expectedBy project(':hiku-common')
+    implementation project(':cmd-native')
+    implementation project(':hiketsu-native')
 }

@@ -1,3 +1,12 @@
+pluginManagement {
+    repositories {
+        gradlePluginPortal()
+        maven {
+            url = 'http://dl.bintray.com/kotlin/kotlin-eap'
+        }
+    }
+}
+
 rootProject.name = 'hiku'
 include 'cmd-jvm'
 include 'cmd-common'
@@ -8,4 +17,3 @@ include 'hiketsu-native'
 include 'hiku-common'
 include 'hiku-jvm'
 include 'hiku-native'
-
