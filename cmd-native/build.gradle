@@ -1,4 +1,6 @@
-apply plugin: 'org.jetbrains.kotlin.platform.native'
+plugins {
+    id 'org.jetbrains.kotlin.platform.native'
+}
 
 components.main {
     // Compile this component for 64-bit MacOS, Linux and Windows.
@@ -6,8 +8,13 @@ components.main {
     outputKinds = [KLIBRARY]
 }
 
+repositories {
+    maven {
+        url 'http://dl.bintray.com/kotlin/kotlin-eap'
+    }
+    mavenCentral()
+}
+
 dependencies {
     expectedBy project(':cmd-common')
 }
-
-//task test(dependsOn: run)

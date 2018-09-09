@@ -1,8 +1,13 @@
-apply plugin: 'kotlin-platform-common'
+plugins {
+    id 'org.jetbrains.kotlin.platform.common'
+}
 
 repositories {
     mavenCentral()
     jcenter()
+    maven {
+        url 'http://dl.bintray.com/kotlin/kotlin-eap'
+    }
 }
 
 dependencies {
