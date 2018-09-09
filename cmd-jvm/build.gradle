@@ -1,7 +1,12 @@
-apply plugin: 'kotlin-platform-jvm'
+plugins {
+    id 'org.jetbrains.kotlin.platform.jvm'
+}
 
 repositories {
     mavenCentral()
+    maven {
+        url 'http://dl.bintray.com/kotlin/kotlin-eap'
+    }
 }
 
 dependencies {

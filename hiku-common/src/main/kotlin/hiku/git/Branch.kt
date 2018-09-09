@@ -19,7 +19,7 @@ suspend fun createPR(srcGitBranch: GitBranch.Local,
 
 private suspend fun updateRemote(srcGitBranch: GitBranch.Local, remoteBranch: GitBranch.Remote): GitBranch.Remote {
     val srcBranchName = srcGitBranch.branchName
-    require(!forbiddenBranches.contains(srcBranchName)) {
+    require(forbiddenBranches.none { it == srcBranchName.name }) {
         println("Cannot use this command on branch $srcBranchName")
     }
     println("Push $srcBranchName to $remoteBranch")

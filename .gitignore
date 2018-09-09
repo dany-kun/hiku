@@ -2,6 +2,8 @@
 
 hiku.iml
 hiketsu-jvm/tmp
+cmd-jvm/out/*
+hiketsu-jvm/out/*
 
 
 ### Intellij ###

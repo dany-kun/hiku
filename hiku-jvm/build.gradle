@@ -1,12 +1,17 @@
+plugins {
+    id 'org.jetbrains.kotlin.platform.jvm'
+}
 group 'com.gitter'
 version '1.0-SNAPSHOT'
 
-apply plugin: 'kotlin-platform-jvm'
 apply plugin: 'application'
 
 repositories {
     mavenCentral()
     jcenter()
+    maven {
+        url 'http://dl.bintray.com/kotlin/kotlin-eap'
+    }
 }
 
 mainClassName = 'hiku.LauncherKt'

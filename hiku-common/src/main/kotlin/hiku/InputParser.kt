@@ -2,6 +2,7 @@ package hiku
 
 import hiku.git.lib.CommandLineGitService
 import hiku.git.lib.GitBranch
+import hiku.git.lib.GitBranchName
 
 suspend fun findCommand(args: Array<String>): Command {
     return try {
@@ -22,11 +23,13 @@ suspend fun findCommand(args: Array<String>): Command {
 }
 
 private suspend fun createGitPRCommand(arguments: List<String>): Command.PushPR {
-    fun String.toRemoteBranch() = split(":").let { GitBranch.Remote(it[1], it[0]) }
+    fun String.toRemoteBranch() = split(":").let { GitBranch.Remote(
+            GitBranchName(it[1]),
+            it[0]) }
     return when (arguments.size) {
         1 -> {
             val currentBranchName = CommandLineGitService.getCurrentBranchName()
-            Command.PushPR(GitBranch.Remote(currentBranchName, "origin"), arguments[0].toRemoteBranch())
+            Command.PushPR(GitBranch.Remote(GitBranchName(currentBranchName), "origin"), arguments[0].toRemoteBranch())
         }
         2 -> Command.PushPR(arguments[0].toRemoteBranch(), arguments[1].toRemoteBranch())
         else -> {

@@ -49,7 +49,7 @@ class GithubService(owner: String,
                                       destGitBranch: GitBranch.Remote): HttpResponse<CreatedPullRequest> {
         val url = "$baseUrl/pulls"
         val srcFullName = formatSrcRemoteBranch(srcGitBranch)
-        val body = PullRequestBody(srcGitBranch.branchName, srcFullName, destGitBranch.branchName)
+        val body = PullRequestBody(srcGitBranch.branchName.name, srcFullName, destGitBranch.branchName.name)
         return makePostRequest(url, mapOf(githubOAuthHeader(), "Content-Type" to "application/json"), body)
     }
 

@@ -1,8 +1,10 @@
 package hiku.git.lib
 
-sealed class GitBranch(open val branchName: String) {
-    data class Local(override val branchName: String) : GitBranch(branchName)
-    data class Remote(override val branchName: String, val remoteName: String) : GitBranch(branchName) {
+inline class GitBranchName(val name: String)
+
+sealed class GitBranch(open val branchName: GitBranchName) {
+    data class Local(override val branchName: GitBranchName) : GitBranch(branchName)
+    data class Remote(override val branchName: GitBranchName, val remoteName: String) : GitBranch(branchName) {
 
         private var remoteInfo: RemoteInfo? = null
 
