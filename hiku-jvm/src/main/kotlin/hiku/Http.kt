@@ -4,7 +4,8 @@ import com.github.kittinunf.fuel.httpPost
 import com.github.kittinunf.fuel.moshi.moshiDeserializerOf
 import com.squareup.moshi.KotlinJsonAdapterFactory
 import com.squareup.moshi.Moshi
-import kotlinx.coroutines.experimental.suspendCancellableCoroutine
+import kotlinx.coroutines.suspendCancellableCoroutine
+import kotlin.coroutines.resume
 
 val moshi: Moshi = Moshi.Builder().add(KotlinJsonAdapterFactory()).build()
 
@@ -17,7 +18,7 @@ actual suspend inline fun <reified B, reified R : Any> makePostRequest(url: Stri
                 .header(headers)
                 .body(serializedBody)
         println(request.cUrlString())
-        request.responseObject(moshiDeserializerOf<R>(), { _, response, result ->
+        request.responseObject(moshiDeserializerOf<R>()) { _, response, result ->
             if (response.statusCode == 404) {
                 continuation.resume(HttpResponse.Error.Auth(result.component2()?.exception
                         ?: RuntimeException("No error associated with a 404")))
@@ -25,6 +26,6 @@ actual suspend inline fun <reified B, reified R : Any> makePostRequest(url: Stri
             result.fold({ continuation.resume(HttpResponse.Success(it)) }, {
                 continuation.resume(HttpResponse.Error.Unknown(it))
             })
-        })
+        }
     }
 }
