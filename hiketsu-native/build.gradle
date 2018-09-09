@@ -1,38 +1,21 @@
-apply plugin: 'konan'
+apply plugin: 'org.jetbrains.kotlin.platform.native'
 
-konan.targets = ['linux', 'macos']
-
-konanArtifacts {
-    interop('libsecret', targets: ['linux']) {
-    }
-
-    library('hiketsu') {
-        enableMultiplatform true
-
-        target('linux') {
-            srcFiles fileTree('src/linux')
-            libraries {
-                artifact 'libsecret'
-            }
-        }
-
-        target('macos') {
-            srcFiles fileTree('src/macos')
+components.main {
+    // Compile this component for 64-bit MacOS, Linux and Windows.
+    targets = ['macos', 'linux']
+    outputKinds = [KLIBRARY]
+    target('linux') {
+        dependencies {
+            cinterop('libsecret')
         }
     }
+}
 
-    program('hiketsu-test') {
-        srcDir 'src/test/kotlin'
-        commonSourceSet 'test'
-        libraries {
-            artifact 'hiketsu'
-        }
-        extraOpts '-tr'
-    }
+sourceSets.main {
+    target('linux').srcDirs += 'src/linux'
+    target('macos').srcDirs += 'src/macos'
 }
 
 dependencies {
     expectedBy project(':hiketsu-common')
 }
-
-task test(dependsOn: run)

@@ -1,17 +1,18 @@
-apply plugin: 'konan'
+apply plugin: 'org.jetbrains.kotlin.platform.native'
 
-konanArtifacts {
+repositories {
+    mavenCentral()
+    jcenter()
+}
 
-    program('hiku') {
-        enableMultiplatform true
-
-        libraries {
-            artifact project(':cmd-native'), 'cmd'
-            artifact project(':hiketsu-native'), 'hiketsu'
-        }
-    }
+components.main {
+    targets = ['macos', 'linux']
+    outputKinds = [EXECUTABLE]
 }
 
 dependencies {
     expectedBy project(':hiku-common')
+    implementation project(':cmd-native')
+    implementation project(':hiketsu-native')
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core-native:$coroutines_version"
 }
