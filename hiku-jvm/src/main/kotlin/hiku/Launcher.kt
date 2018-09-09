@@ -1,6 +1,6 @@
 package hiku
 
-import kotlinx.coroutines.experimental.runBlocking
+import kotlinx.coroutines.runBlocking
 
 fun main(args: Array<String>) {
     runBlocking {

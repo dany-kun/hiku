@@ -7,6 +7,8 @@ pluginManagement {
     }
 }
 
+enableFeaturePreview('GRADLE_METADATA')
+
 rootProject.name = 'hiku'
 include 'cmd-jvm'
 include 'cmd-common'

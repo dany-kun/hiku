@@ -1,7 +1,7 @@
 package cmd
 
 import java.util.concurrent.TimeUnit
-import kotlin.coroutines.experimental.suspendCoroutine
+import kotlin.coroutines.suspendCoroutine
 
 actual fun runLocalCommand(
         commands: List<String>,

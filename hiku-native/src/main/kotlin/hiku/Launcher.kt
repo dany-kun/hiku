@@ -1,32 +1,11 @@
 package hiku
 
-import kotlin.coroutines.experimental.Continuation
-import kotlin.coroutines.experimental.CoroutineContext
-import kotlin.coroutines.experimental.EmptyCoroutineContext
-import kotlin.coroutines.experimental.startCoroutine
-
+import kotlinx.coroutines.runBlocking
 
 fun main(args: Array<String>) {  
-    runCoroutine({ 
+    runBlocking {
         val command = findCommand(args)
-        execute(command) 
-    }) {
-        println(it)
+        val result = execute(command)
+        println(result)
     }
-}
-
-// Waiting for higher level coroutines lib to be available on Kotlin/Nqtive
-internal fun <R> runCoroutine(block: suspend () -> R, callback: (R) -> Unit) {
-    block.startCoroutine(object : Continuation<R> {
-        override val context: CoroutineContext
-            get() = EmptyCoroutineContext
-
-        override fun resume(value: R) {
-            callback(value)
-        }
-
-        override fun resumeWithException(exception: Throwable) {
-            throw exception
-        }
-    })
 }
